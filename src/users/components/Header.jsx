@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faInstagram, faSquareTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faUser, faBars } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 function Header() {
 
@@ -26,8 +27,12 @@ function Header() {
 
             <FontAwesomeIcon icon={faSquareTwitter} className='me-2' />
 
-            <button className='border border-black rounded  px-3 py-2'><FontAwesomeIcon icon={faUser}
-            className='me-2' /> Login</button>
+            <Link to={'/login'}>
+              <button className='border border-black rounded  px-3 py-2'><FontAwesomeIcon icon={faUser}
+              className='me-2' /> Login</button>
+            </Link>
+            {/* <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF3VduXS3fdHmNyjX61GkwydcoWoBniZC7Rw&s" alt=""
+            style={{height:'40px',width:'40px'}} /> */}
           </div>
         </div>
 
@@ -35,7 +40,11 @@ function Header() {
         <nav className='p-3 w-full bg-gray-900 text-white md:flex justify-center items-center'>
           <div className='flex justify-between p-3 md:hidden'>
             <span onClick={() => setStatus(!status)} className='text-2xl'><FontAwesomeIcon icon={faBars} /></span>
+            <Link to={'/login'}>
             <button className='border border-white rounded  px-3 py-2 md:hidden'><FontAwesomeIcon icon={faUser} /> Login</button>
+            </Link>
+            {/* <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF3VduXS3fdHmNyjX61GkwydcoWoBniZC7Rw&s" alt=""
+            style={{height:'40px',width:'40px'}} /> */}
           </div>
 
           <ul className={status?'md:flex':'md:flex justify-center hidden'}>

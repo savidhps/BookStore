@@ -34,6 +34,7 @@ function Footer() {
           </div>
         </div>
       </div>
+      
       <div className='bg-black text-white flex justify-center items-center '>
         <h3 className='p-4'>Copyright © 2023 All rights reserved | This website is made with ❤by Savidh P S</h3>
       </div>
