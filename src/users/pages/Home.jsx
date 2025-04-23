@@ -3,6 +3,8 @@ import Header from "../components/Header";
 import  Footer  from "../../components/Footer";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { Link } from "react-router-dom";
+
 
 
 
@@ -100,7 +102,7 @@ function Home() {
           </div>
         
         <div className="flex justify-center items-center my-5">
-          <button className="px-3 py-2 bg-blue-900 border text-white hover:border hover:border-blue-900 hover:text-blue-900 hover:bg-white">Explore More</button>
+         <Link to='/allbooks'> <button className="px-3 py-2 bg-blue-900 border text-white hover:border hover:border-blue-900 hover:text-blue-900 hover:bg-white">Explore More</button></Link>
         </div>
 
       </section>

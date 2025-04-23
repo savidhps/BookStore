@@ -48,9 +48,9 @@ function Header() {
           </div>
 
           <ul className={status?'md:flex':'md:flex justify-center hidden'}>
-            <li className='mx-4 mt-3 md:mt-0'>Home</li>
-            <li className='mx-4 mt-3 md:mt-0'>Book</li>
-            <li className='mx-4 mt-3 md:mt-0'>Carreers</li>
+            <Link to='/'><li className='mx-4 mt-3 md:mt-0'>Home</li></Link>
+            <Link to='/allbooks'><li className='mx-4 mt-3 md:mt-0'>Book</li></Link>
+            <Link to='/careers'><li className='mx-4 mt-3 md:mt-0'>Careers</li></Link>
             <li className='mx-4 mt-3 md:mt-0'>Contact</li>
           </ul>
         </nav> 
