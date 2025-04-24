@@ -7,6 +7,8 @@ import Preloader from './components/Preloader';
 import { useEffect, useState } from 'react';
 import AllBooks from './users/pages/AllBooks';
 import Careers from './users/pages/Careers';
+import Contact from './pages/Contact';
+import Profile from './users/pages/Profile';
 
 
 function App() {
@@ -25,6 +27,8 @@ function App() {
         <Route path='*' element={<PagenotFound />} />
         <Route path='/allbooks' element={<AllBooks/>} />
         <Route path='/careers' element={<Careers/>} />
+        <Route path='/contact' element={<Contact/>} />
+        <Route path='/profile' element={<Profile/>} />
         <Route path='*' element={<PagenotFound />} />
       </Routes>
     </>
