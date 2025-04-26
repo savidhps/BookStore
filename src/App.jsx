@@ -9,6 +9,10 @@ import AllBooks from './users/pages/AllBooks';
 import Careers from './users/pages/Careers';
 import Contact from './pages/Contact';
 import Profile from './users/pages/Profile';
+import AdminHome from './admin/pages/AdminHome';
+import AdminBooks from './admin/pages/AdminBooks';
+import AdminCareers from './admin/pages/AdminCareers';
+import AdminSettings from './admin/pages/AdminSettings';
 
 
 function App() {
@@ -29,6 +33,11 @@ function App() {
         <Route path='/careers' element={<Careers/>} />
         <Route path='/contact' element={<Contact/>} />
         <Route path='/profile' element={<Profile/>} />
+        <Route path='/admin-home'element={isLoading ? <AdminHome/> : <Preloader />} />
+        <Route path='/admin-books' element={<AdminBooks/>} />
+        <Route path='/admin-careers' element={<AdminCareers/>} />
+        <Route path='/admin-setings' element={<AdminSettings/>} />
+        
         <Route path='*' element={<PagenotFound />} />
       </Routes>
     </>

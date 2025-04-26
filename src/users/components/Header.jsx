@@ -38,9 +38,9 @@ function Header() {
           {/* dropdown  */}
 
 
-          <div class="relative inline-block text-left">
+          <div className="relative inline-block text-left">
             <div>
-              <button onClick={()=>setDropDownStatus(!dropDownStatue)} type="button" class="inline-flex items-center w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs {ring-1 ring-gray-300 ring-inset} hover:bg-gray-50" id="menu-button" aria-expanded="true" aria-haspopup="true">
+              <button onClick={()=>setDropDownStatus(!dropDownStatue)} type="button" className="inline-flex items-center w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs {ring-1 ring-gray-300 ring-inset} hover:bg-gray-50" id="menu-button" aria-expanded="true" aria-haspopup="true">
 
                 <img className='mx-4' src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF3VduXS3fdHmNyjX61GkwydcoWoBniZC7Rw&s" alt=""
                   style={{ height: '40px', width: '40px' }} />
@@ -85,9 +85,9 @@ function Header() {
             <button className='border border-white rounded  px-3 py-2 md:hidden'><FontAwesomeIcon icon={faUser} /> Login</button>
             </Link> */}
           {/* Drop Down  */}
-          <div class="relative inline-block text-left">
+          <div className="relative inline-block text-left">
             <div>
-              <button onClick={()=>setDropDownStatus(!dropDownStatue)} type="button" class="inline-flex items-center w-full justify-center gap-x-1.5 rounded-md bg-gray-900 px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs {ring-1 ring-gray-300 ring-inset} hover:bg-gray-50" id="menu-button" aria-expanded="true" aria-haspopup="true">
+              <button onClick={()=>setDropDownStatus(!dropDownStatue)} type="button" className="inline-flex items-center w-full justify-center gap-x-1.5 rounded-md bg-gray-900 px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs {ring-1 ring-gray-300 ring-inset} hover:bg-gray-50" id="menu-button" aria-expanded="true" aria-haspopup="true">
 
                 <img className='mx-4' src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF3VduXS3fdHmNyjX61GkwydcoWoBniZC7Rw&s" alt=""
                   style={{ height: '40px', width: '40px',borderRadius:'20px' }} />
@@ -96,8 +96,8 @@ function Header() {
               </button>
             </div>
 
-            {dropDownStatue&&<div class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-              <div class="py-1" role="none">
+            {dropDownStatue&&<div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+              <div className="py-1" role="none">
 
                 <Link to='/profile'>
                   <p className='block px-4 py-2 text-gray-700 ' role="menuitem" tabIndex="-1" id='menu-item-0' >
