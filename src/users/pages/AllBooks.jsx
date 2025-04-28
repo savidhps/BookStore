@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 
 function AllBooks() {
-    const [status,setStatus]=useState(false)
+    const [status, setStatus] = useState(false)
     return (
         <>
             <Header />
@@ -18,14 +18,14 @@ function AllBooks() {
                     <input type="text" placeholder='Search by title ' className='rounded border border-gray-400 px-5 py-2 mt-4 mb-5 md:w-1/4 1/2 shadow' />
                     <button className='bg-blue-900 shadow text-white px-3 py-2 ms-3 border hover:text-blue-900 hover:bg-white hover:border'>Search</button>
                 </div>
-    
+
                 <div className='md:grid grid-cols-[1fr_4fr] md:py-10 md:px-20 px-5'>
                     <div className=' '>
                         <div className='flex justify-between'>
                             <h1 className='text-2xl font-medium'>Filters</h1>
-                            <span className='md:hidden' onClick={()=>setStatus(!status)}><FontAwesomeIcon icon={faBars} className='me-3'/></span>
+                            <span className='md:hidden' onClick={() => setStatus(!status)}><FontAwesomeIcon icon={faBars} className='me-3' /></span>
                         </div>
-                        <div className={status?'md:block':'md:block justify-center hidden'}>
+                        <div className={status ? 'md:block' : 'md:block justify-center hidden'}>
                             <div className='mt-3'>
                                 <input type="radio" id='Literary' name='filter' />
                                 <label htmlFor="Literary" className='ms-3'>Literary Fiction</label>
@@ -59,12 +59,12 @@ function AllBooks() {
                                 <label htmlFor="Politics" className='ms-3'>Politics</label>
                             </div>
                         </div>
-    
-    
+
+
                     </div>
-    
+
                     <div>
-    
+
                         <div className="md:grid grid-cols-4 w-full mt-5">
                             <div className="p-3">
                                 <div className="p-3 shadow">
@@ -79,7 +79,7 @@ function AllBooks() {
                                         <h3>The Da vinci code</h3>
                                         <button className="px-3 py-2 bg-blue-900 border text-white hover:border hover:border-blue-900 hover:text-blue-900 hover:bg-white w-full">Buy $18</button>
                                     </div>
-    
+
                                 </div>
                             </div>
                             <div className="p-3">
@@ -95,7 +95,7 @@ function AllBooks() {
                                         <h3>The Da vinci code</h3>
                                         <button className="px-3 py-2 bg-blue-900 border text-white hover:border hover:border-blue-900 hover:text-blue-900 hover:bg-white w-full">Buy $18</button>
                                     </div>
-    
+
                                 </div>
                             </div>
                             <div className="p-3">
@@ -111,7 +111,7 @@ function AllBooks() {
                                         <h3>The Da vinci code</h3>
                                         <button className="px-3 py-2 bg-blue-900 border text-white hover:border hover:border-blue-900 hover:text-blue-900 hover:bg-white w-full">Buy $18</button>
                                     </div>
-    
+
                                 </div>
                             </div>
                             <div className="p-3">
@@ -127,23 +127,23 @@ function AllBooks() {
                                         <h3>The Da vinci code</h3>
                                         <button className="px-3 py-2 bg-blue-900 border text-white hover:border hover:border-blue-900 hover:text-blue-900 hover:bg-white w-full">Buy $18</button>
                                     </div>
-    
+
                                 </div>
                             </div>
                         </div>
-    
+
                     </div>
                 </div>
             </div>
 
             {/* not Logged in */}
             <div className='grid grid-cols-3 py-10'>
-            <div></div>
-            <div className='flex justify-center items-center flex-col w-full'>
-                <img src="https://cdn-icons-gif.flaticon.com/17702/17702103.gif" alt="" className='w-1/2' />
-                <p className='mt-5 text-2xl'>Please <Link className='text-red-700 underline' to='/login'>Login</Link> to Explore more</p>
-            </div>
-            <div></div>
+                <div></div>
+                <div className='flex justify-center items-center flex-col w-full'>
+                    <img src="https://cdn-icons-gif.flaticon.com/17702/17702103.gif" alt="" className='w-1/2' />
+                    <p className='mt-5 text-2xl'>Please <Link className='text-red-700 underline' to='/login'>Login</Link> to Explore more</p>
+                </div>
+                <div></div>
             </div>
 
 

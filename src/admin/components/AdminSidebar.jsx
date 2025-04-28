@@ -54,19 +54,19 @@ function AdminSidebar() {
 
             <div className='my-5'>
                 <div className="mb-3">
-                    <input onClick={() => filter('home')} type="radio" name="filter" id="home" readonly checked={homeStatus}/>
+                    <input onClick={() => filter('home')} type="radio" name="filter" id="home" readOnly checked={homeStatus}/>
                     <label htmlFor="home" className='ms-3'><FontAwesomeIcon icon={faHouse} /> Home</label>
                 </div>
                 <div className="mb-3">
-                    <input onClick={() => filter('books')} type="radio" name="filter" id="allbooks" readonly checked={bookStatus}/>
+                    <input onClick={() => filter('books')} type="radio" name="filter" id="allbooks" readOnly checked={bookStatus}/>
                     <label htmlFor="allbooks" className='ms-3'><FontAwesomeIcon icon={faBook} /> AllBooks</label>
                 </div>
                 <div className="mb-3">
-                    <input onClick={() => filter('careers')} type="radio" name="filter" id="careers" readonly checked={careersStatus}/>
+                    <input onClick={() => filter('careers')} type="radio" name="filter" id="careers" readOnly checked={careersStatus}/>
                     <label htmlFor="careers" className='ms-3'><FontAwesomeIcon icon={faBagShopping} /> Careers</label>
                 </div>
                 <div className="mb-3">
-                    <input onClick={() => filter('settings')} type="radio" name="filter" id="settings" readonly checked={settingStatus}/>
+                    <input onClick={() => filter('settings')} type="radio" name="filter" id="settings" readOnly checked={settingStatus}/>
                     <label htmlFor="settings" className='ms-3'> <FontAwesomeIcon icon={faGear} /> Settings</label>
                 </div>
 
