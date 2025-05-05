@@ -28,6 +28,7 @@ function App() {
       <Routes>
         <Route path='/' element={isLoading ? <Home /> : <Preloader />} />
         <Route path='/login' element={<Auth />} />
+        <Route path='/register' element={<Auth register/>} />
         <Route path='*' element={<PagenotFound />} />
         <Route path='/allbooks' element={<AllBooks/>} />
         <Route path='/careers' element={<Careers/>} />

@@ -1,10 +1,71 @@
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify';
+import { loginApi, registerApi } from '../services/allApi';
 
 
 function Auth({register}) {
+
+  const [userDetails,setUserDetails]=useState({
+    username:"",
+    email:"",
+    password:""
+  })
+
+  const navigate =useNavigate()
+  console.log(userDetails);
+  
+  const handleRegister=async()=>{
+    // console.log("in handleRegister function");
+    const {username,email,password}=userDetails
+    if (!username||!email||!password) {
+      toast.info("please fill the form compleatly ")
+    } else {
+      const result=await registerApi({username,email,password})
+      console.log(result);
+      if(result.status==200){
+        toast.success('Register sucessfull')
+        setUserDetails({
+          username:"",
+          email:"",
+          password:""
+        })
+        navigate('/login')
+      }
+      else if (result.status == 409) {
+        toast.warning(result.response.data)
+        setUserDetails({
+          username: "",
+          email: "",
+          password: ""
+        })
+      } else {
+        toast.error("something went wrong")
+        setUserDetails({
+          username: "",
+          email: "",
+          password: ""
+        })
+      }
+    }
+    
+  }
+
+  const handleLogin=async()=>{
+    const {email,password}=userDetails
+    if(!email||!password){
+      toast.info("please enter complete details")
+    }else{
+      const result=await loginApi({email,password})
+      console.log(result);
+      
+    }
+  }
+
+
+
   return (
     <>
     <div id='loginpage' className='flex justify-center items-center px-3'>
@@ -24,23 +85,23 @@ function Auth({register}) {
           <h1 className='text-white mt-5 text-3xl mb-8'>Register</h1>}
           {/* username  */}
           {register&&<div className='mb-5 w-full '>
-           <input type="text" placeholder='User Name' className='p-2 rounded placeholder-gray-600 bg-white w-full' />
+           <input type="text" onChange={(e)=>setUserDetails({...userDetails,username:e.target.value})} placeholder='User Name' className='p-2 rounded placeholder-gray-600 bg-white w-full' />
           </div>}
           <div className='mb-5 w-full '>
-          <input type="text" placeholder='Email Id' className='p-2 rounded placeholder-gray-600 bg-white w-full' />
+          <input type="text" onChange={(e)=>setUserDetails({...userDetails,email:e.target.value})} placeholder='Email Id' className='p-2 rounded placeholder-gray-600 bg-white w-full' />
           </div>
           <div className='mb-2 w-full '>
-          <input type="text" placeholder='Password' className='p-2 rounded placeholder-gray-600 bg-white w-full' />
+          <input type="text" onChange={(e)=>setUserDetails({...userDetails,password:e.target.value})}  placeholder='Password' className='p-2 rounded placeholder-gray-600 bg-white w-full' />
           </div>
           <div className='mb-5 w-full flex justify-between'>
             <p className='text-amber-300' style={{fontSize:'10px'}}>*Never share your password with other</p>
             {!register&&<p className='text-white underline' style={{fontSize:'10px'}}>Forgot Password</p>}
           </div>
           {register?<div className='mb-2 w-full'>
-          <button className='bg-green-800 text-white w-full p-3 rounded'>Register</button>
+          <button type='button' onClick={handleRegister} className='bg-green-800 text-white w-full p-3 rounded'>Register</button>
           </div>:
           <div className='mb-2 w-full'>
-          <button className='bg-green-800 text-white w-full p-3 rounded'>Login</button>
+          <button type='button' onClick={handleLogin} className='bg-green-800 text-white w-full p-3 rounded'>Login</button>
           </div>}
           {!register&&<p className='text-white'>-----------------or-----------------</p>}
           {!register&&<div className='mb-5 mt-3 w-full'>
@@ -57,6 +118,7 @@ function Auth({register}) {
       <div></div>
 
     </div>
+    <ToastContainer theme='colored' position='top-center' autoClose={2000} />
     </div>
     </>
   )
