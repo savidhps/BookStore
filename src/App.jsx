@@ -13,7 +13,7 @@ import AdminHome from './admin/pages/AdminHome';
 import AdminBooks from './admin/pages/AdminBooks';
 import AdminCareers from './admin/pages/AdminCareers';
 import AdminSettings from './admin/pages/AdminSettings';
-
+import ViewBook from "./users/pages/ViewBook";
 
 function App() {
   const [isLoading, setIsLoading] = useState(false)
@@ -38,6 +38,7 @@ function App() {
         <Route path='/admin-books' element={<AdminBooks/>} />
         <Route path='/admin-careers' element={<AdminCareers/>} />
         <Route path='/admin-setings' element={<AdminSettings/>} />
+        <Route path='/view-books' element={<ViewBook/>} />
         
         <Route path='*' element={<PagenotFound />} />
       </Routes>

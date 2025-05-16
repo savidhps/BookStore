@@ -59,7 +59,7 @@ function Profile() {
           "Authorization":`Bearer ${token}`
         }
         const reqBody=new FormData()
-        for(key in bookDetails){
+        for(let key in bookDetails){
           if(key !='uploadedImage'){
             reqBody.append(key,bookDetails[key])
           }else{
@@ -70,7 +70,16 @@ function Profile() {
         }
         const result=await uploadBookApi(reqBody,reqHeader)
         console.log(result);
-        
+        if(result.status==401){
+          toast.warning(result.response.data)
+          handleReset()
+        }else if(result.status==200){
+          toast.success('Book added sucessfully')
+          handleReset()
+        }else{
+          toast.error("something went wrong")
+          handleReset()
+        }
       }
 
   }
@@ -183,8 +192,8 @@ function Profile() {
 
               </div>
               {preview && <div className='flex justify-center items-center'>
-                { previewList?.map((item)=>(
-                <img src={item} alt=""
+                { previewList?.map((item,index)=>(
+                <img key={index} src={item} alt=""
                   style={{ widows: '70px', height: '70px' }} className='mx-2'/>
                 ))}
                 {previewList.length<3&&<label htmlFor="imageFile">
