@@ -38,7 +38,7 @@ function App() {
         <Route path='/admin-books' element={<AdminBooks/>} />
         <Route path='/admin-careers' element={<AdminCareers/>} />
         <Route path='/admin-setings' element={<AdminSettings/>} />
-        <Route path='/view-books' element={<ViewBook/>} />
+        <Route path='/view-books/:id' element={<ViewBook/>} />
         
         <Route path='*' element={<PagenotFound />} />
       </Routes>

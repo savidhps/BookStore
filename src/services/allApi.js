@@ -29,6 +29,12 @@ export const uploadBookApi=async(reqBody,reqHeader)=>{
 }
 
 //get all Books
-export const getAllBookApi=async(reqHeader)=>{
-    return await commonApi('GET',`${serverUrl}/all-books`,'',reqHeader)
+export const getAllBookApi=async(searchKey,reqHeader)=>{
+    //query parameter baseurl?key=value
+    return await commonApi('GET',`${serverUrl}/all-books?search=${searchKey}`,'',reqHeader)
+}
+
+//Api to view a book 
+export const viewABookApi=async(id)=>{
+    return await commonApi('GET',`${serverUrl}/view-books/${id}`)
 }
