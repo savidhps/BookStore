@@ -4,6 +4,8 @@ import AdminHeader from '../components/AdminHeader'
 import AdminSidebar from '../components/AdminSidebar'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationDot, faTrash, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { toast, ToastContainer } from 'react-toastify'
+import { addJobApi } from '../../services/allApi'
 
 
 
@@ -11,6 +13,36 @@ function AdminCareers() {
     const [jobPostStatus, setJobPostStatus] = useState(true)
     const [viewApplicantStatus, setViewApplicantStatus] = useState(false)
     const [modalStatus, setModalStatus] = useState(false)
+    const [jobDetails, setJobDetails] = useState({
+        title: "", location: "", jType: "", salary: "", qualification: "", experience: "", description: ""
+    })
+    console.log(jobDetails);
+
+    const handleReset = () => {
+        setJobDetails({
+            title: "", location: "", jType: "", salary: "", qualification: "", experience: "", description: ""
+        })
+    }
+    const handleSubmit = async () => {
+        const { title, location, jType, salary, qualification, experience, description } = jobDetails
+        if (!title || !location || !jType || !salary || !qualification || !experience || !description) {
+            toast.info("please fill the form compleatly")
+
+        } else {
+            const result = await addJobApi(jobDetails)
+            // console.log(result);
+            if (result.status == 200) {
+                toast.success("Submited Sucessfully")
+            } else if (result.status == 404) {
+                toast.warning(result.response.data)
+                handleReset()
+            } else {
+                toast.error("something went wrong")
+                handleReset()
+            }
+
+        }
+    }
 
     return (
         <>
@@ -84,14 +116,40 @@ function AdminCareers() {
                                     </div>
 
                                     {/* body  */}
-                                    <div className="mb-3">
-                                        <input type="text" placeholder='Image Url' className='p-2 bg-white rounded placeholder-gray-400 w-full'
-                                        />
+                                    <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                        <h1 className='ps-3'>Enter the Job Details:</h1>
+                                        <div className='p-3 '>
+                                            <div className='mb-3'>
+                                                <input type="text" placeholder='Title' onChange={(e) => setJobDetails({ ...jobDetails, title: e.target.value })} value={jobDetails.title} className='p-2 border border-gray-400 rounded placeholder-gray-500 w-full' />
+                                            </div>
+                                            <div className='mb-3'>
+                                                <input type="text" placeholder='Location' onChange={(e) => setJobDetails({ ...jobDetails, location: e.target.value })} value={jobDetails.location} className='p-2 border border-gray-400 rounded placeholder-gray-500 w-full' />
+                                            </div>
+                                            <div className='mb-3'>
+                                                <input type="text" placeholder='Job Type' onChange={(e) => setJobDetails({ ...jobDetails, jType: e.target.value })} value={jobDetails.jType} className='p-2 border border-gray-400 rounded placeholder-gray-500 w-full' />
+                                            </div>
+                                            <div className='mb-3'>
+                                                <input type="text" placeholder='Salary' onChange={(e) => setJobDetails({ ...jobDetails, salary: e.target.value })} value={jobDetails.salary} className='p-2 border border-gray-400 rounded placeholder-gray-500 w-full' />
+                                            </div>
+                                            <div className='mb-3'>
+                                                <input type="text" placeholder='Qualification' onChange={(e) => setJobDetails({ ...jobDetails, qualification: e.target.value })} value={jobDetails.qualification} className='p-2 border border-gray-400 rounded placeholder-gray-500 w-full' />
+                                            </div>
+                                            <div className='mb-3'>
+                                                <input type="text" placeholder='experience' onChange={(e) => setJobDetails({ ...jobDetails, experience: e.target.value })} value={jobDetails.experience} className='p-2 border border-gray-400 rounded placeholder-gray-500 w-full' />
+                                            </div>
+                                            <div className='mb-3'>
+                                                <input type="text" placeholder='Descripation' onChange={(e) => setJobDetails({ ...jobDetails, description: e.target.value })} value={jobDetails.description} className='p-2 border border-gray-400 rounded placeholder-gray-500 w-full' />
+                                            </div>
+                                        </div>
                                     </div>
                                     {/* footer of modal  */}
                                     <div className="bg-gray-200 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                                        <button type="button" className="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold border text-white shadow-xs hover:text-black hover:bg-white hover:border sm:ml-3 sm:w-auto">Submit</button>
-                                        <button type="button" className="mt-3 inline-flex w-full justify-center rounded-md bg-orange-500 px-3 py-2 text-sm font-semibold border text-white shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50 sm:mt-0 sm:w-auto hover:text-black hover:border">Reset</button>
+                                        <button type="button" className="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold border text-white shadow-xs
+                                         hover:text-black hover:bg-white hover:border sm:ml-3 sm:w-auto"
+                                            onClick={handleSubmit}>Submit</button>
+                                        <button type="button" className="mt-3 inline-flex w-full justify-center rounded-md bg-orange-500 px-3 py-2 text-sm 
+                                        font-semibold border text-white shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50 sm:mt-0 sm:w-auto
+                                         hover:text-black hover:border" onClick={handleReset} >Reset</button>
                                     </div>
                                 </div>
                             </div>
@@ -133,6 +191,8 @@ function AdminCareers() {
 
                 </div>
             </div>
+            <ToastContainer theme='colored' position='top-center' autoClose={2000} />
+
 
             <Footer />
         </>
