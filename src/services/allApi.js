@@ -48,3 +48,12 @@ export const getAllBookAdminApi=async(reqHeader)=>{
 export const approveBookApi=async(reqBody,reqHeader)=>{
     return await commonApi('PUT',`${serverUrl}/approve-book`,reqBody,reqHeader)
 }
+
+//api to get all users
+export const getAllUsersApi=async(reqHeader)=>{
+    return await commonApi('GET',`${serverUrl}/all-users`,'',reqHeader)
+}
+//api to add all jobs
+export const addJobApi=async(reqBody)=>{
+    return await commonApi("POST",`${serverUrl}/add-job`,reqBody)
+}

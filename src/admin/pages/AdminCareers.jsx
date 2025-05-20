@@ -3,13 +3,15 @@ import Footer from '../../components/Footer'
 import AdminHeader from '../components/AdminHeader'
 import AdminSidebar from '../components/AdminSidebar'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLocationDot, faTrash } from '@fortawesome/free-solid-svg-icons'
-faLocationDot
+import { faLocationDot, faTrash, faXmark } from '@fortawesome/free-solid-svg-icons'
+
 
 
 function AdminCareers() {
     const [jobPostStatus, setJobPostStatus] = useState(true)
     const [viewApplicantStatus, setViewApplicantStatus] = useState(false)
+    const [modalStatus, setModalStatus] = useState(false)
+
     return (
         <>
             <AdminHeader />
@@ -36,7 +38,7 @@ function AdminCareers() {
                             <button className='bg-green-500 px-3 py-2 border border-white'>Search</button>
                         </div>
                         {jobPostStatus && <div>
-                            <button className='bg-white text-blue-700 border border-blue-700 md:me-5 px-3 py-2'> Add Job</button>
+                            <button onClick={() => setModalStatus(true)} className='bg-white text-blue-700 border border-blue-700 md:me-5 px-3 py-2'> Add Job</button>
                         </div>}
                     </div>
 
@@ -66,6 +68,36 @@ function AdminCareers() {
 
                         </div>
                     </div>}
+
+                    {modalStatus && <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+
+                        <div className="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true"></div>
+
+                        <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+                            <div className="flex md:min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+
+                                <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                                    {/* title  */}
+                                    <div className=" bg-gray-900 p-4 flex  sm:px-6 justify-between">
+                                        <h1 className='text-white text-2xl'>Application form</h1>
+                                        <FontAwesomeIcon icon={faXmark} onClick={() => setModalStatus(false)} className='text-white fa-2x' />
+                                    </div>
+
+                                    {/* body  */}
+                                    <div className="mb-3">
+                                        <input type="text" placeholder='Image Url' className='p-2 bg-white rounded placeholder-gray-400 w-full'
+                                        />
+                                    </div>
+                                    {/* footer of modal  */}
+                                    <div className="bg-gray-200 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                                        <button type="button" className="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold border text-white shadow-xs hover:text-black hover:bg-white hover:border sm:ml-3 sm:w-auto">Submit</button>
+                                        <button type="button" className="mt-3 inline-flex w-full justify-center rounded-md bg-orange-500 px-3 py-2 text-sm font-semibold border text-white shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50 sm:mt-0 sm:w-auto hover:text-black hover:border">Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>}
+
 
                     {viewApplicantStatus && (
                         <div className='md:flex justify-center items-center mt-5'>

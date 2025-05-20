@@ -4,7 +4,7 @@ import AdminHeader from '../components/AdminHeader'
 import AdminSidebar from '../components/AdminSidebar'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
-import { approveBookApi, getAllBookAdminApi } from '../../services/allApi'
+import { approveBookApi, getAllBookAdminApi, getAllUsersApi } from '../../services/allApi'
 import { toast, ToastContainer } from 'react-toastify'
 
 
@@ -14,6 +14,7 @@ function AdminBooks() {
     const [bookDetails, setBookDetails] = useState([])
     const [token, setToken] = useState("")
     const [approveStatus, setApproveStatus] = useState('')
+    const [allusers,setAllUsers]=useState([])
 
 
     const getAllBookAdmin = async (token) => {
@@ -27,14 +28,16 @@ function AdminBooks() {
         }
 
     }
-    console.log(bookDetails);
+    // console.log(bookDetails);
+    console.log(allusers);
+    
 
     const approveBook = async (data) => {
         const reqHeader = {
             "Authorization": `Bearer ${token}`
         }
         const result = await approveBookApi(data, reqHeader)
-        console.log(result);
+        // console.log(result);
         if (result.status == 200) {
             setApproveStatus(!approveStatus)
         } else {
@@ -44,15 +47,32 @@ function AdminBooks() {
 
     }
 
+    // function to get all users 
+    const getAllUsers = async (token) => {
+        const reqHeader = {
+            "Authorization": `Bearer ${token}`
+        }
+        const result = await getAllUsersApi(reqHeader)
+        console.log(result);
+        setAllUsers(result.data)
+
+    }
+
     useEffect(() => {
         if (sessionStorage.getItem("token")) {
-            const token = sessionStorage.getItem("token")
             // console.log(token);
+            const token = sessionStorage.getItem("token")
             setToken(token)
-            getAllBookAdmin(token)
+            if (booklistStatus == true) {
+                getAllBookAdmin(token)
+            } else if (userStatus == true) {
+                getAllUsers(token)
+            } else {
+                console.log("something went wrong");
 
+            }
         }
-    }, [])
+    }, [approveStatus, userStatus])
 
     return (
         <>
@@ -82,7 +102,7 @@ function AdminBooks() {
                                 bookDetails?.length > 0 ?
                                     bookDetails.map((item, index) => (
                                         <div className="p-3" key={index}>
-                                            <div className={item?.status=='sold' ?'p-3 opacity-54  rounded-lg':'p-3  rounded-lg'}>
+                                            <div className={item?.status == 'sold' ? 'p-3 opacity-54  rounded-lg' : 'p-3  rounded-lg'}>
                                                 <img src={item?.imageurl} alt="" style={{ width: '100%', height: '300px' }} />
                                                 <div className="flex justify-center flex-col items-center mt-3">
                                                     <p className="text-blue-700">{item?.author.slice(0, 20)}..</p>
@@ -105,38 +125,20 @@ function AdminBooks() {
 
 
                         {/* user tab div  */}
-                        {userStatus && <div className='md:flex justify-evenly items-center p-4 '>
-                            <div className='shadow bg-gray-400 flex justify-center items-center px-10 py-3 mb-6   rounded'>
-                                <div>
-                                    <FontAwesomeIcon className='fa-2xl' icon={faUser} />
-                                </div>
-                                <div>
-                                    <p className='text-red-500'>ID:12345678910</p>
-                                    <h1 className='text-2xl text-blue-600'> Name</h1>
-                                    <p>temp@gmail.com</p>
-                                </div>
-                            </div>
-                            <div className='shadow bg-gray-400 flex justify-center items-center px-10 py-3 mb-6   rounded'>
-                                <div>
-                                    <FontAwesomeIcon className='fa-2xl' icon={faUser} />
-                                </div>
-                                <div>
-                                    <p className='text-red-500'>ID:12345678910</p>
-                                    <h1 className='text-2xl text-blue-600'> Name</h1>
-                                    <p>temp@gmail.com</p>
-                                </div>
-                            </div>
-                            <div className='shadow bg-gray-400 flex justify-center items-center px-10 py-3 mb-6   rounded'>
-                                <div>
-                                    <FontAwesomeIcon className='fa-2xl' icon={faUser} />
-                                </div>
-                                <div>
-                                    <p className='text-red-500'>ID:12345678910</p>
-                                    <h1 className='text-2xl text-blue-600'> Name</h1>
-                                    <p>temp@gmail.com</p>
-                                </div>
-                            </div>
-
+                        {userStatus && <div className='md:grid grid-cols-3 w-full mt-5'>
+                            {allusers?.length>0?
+                             allusers?.map((item,index)=>(
+                                <div key={index} className='bg-gray-300 px-5 py-2  md:mb-16 mb-10 rounded md:mx-4 '>
+                        <p className='text-orange-700 mb-1'>ID:{item?._id}</p>
+                        <div className='flex'>
+                          <img src={item.profile == "" ? "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" : `${item?.profile}`} alt="no img" style={{ width: '60px', height: '60px', borderRadius: '50%' }} />
+                          <div className='ms-6'>
+                            <h1 className='text-blue-600 text-lg'>{item?.username}</h1>
+                            <p className='text-sm '>{item?.email}</p>
+                          </div>
+                        </div>
+                      </div>)):
+                            <p>Loading ...</p>}
                         </div>}
 
 
