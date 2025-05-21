@@ -1,15 +1,29 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from "../components/Header";
 import Footer from "../../components/Footer";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot, faArrowUpRightFromSquare, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { getAllJobsApi } from '../../services/allApi';
 
 
 
 function Careers() {
 
-    const [modalStatus,setModalStatus]=useState(false)
+    const [modalStatus, setModalStatus] = useState(false)
+    const [alljobs, setallJobs] = useState([])
+    const [searchKey,setSearchKey]=useState("")
 
+    const getAllJobs = async (searchKey) => {
+        const result = await getAllJobsApi(searchKey)
+        // console.log(result);
+        if (result.status == 200) {
+            setallJobs(result.data)
+        }
+
+    }
+    useEffect(() => {
+        getAllJobs(searchKey)
+    }, [searchKey])
 
     return (
         <>
@@ -23,7 +37,7 @@ function Careers() {
             <div className='p-20'>
                 <h1 className='text-2xl'>Current Openings</h1>
                 <div className='flex justify-center items-center my-8 w-full'>
-                    <input type="text" placeholder='Job title ' className='rounded border border-gray-400 px-5 py-2 mt-4 mb-5 md:w-1/4 1/2 shadow' />
+                    <input type="text" value={searchKey} onChange={(e)=>setSearchKey(e.target.value)} placeholder='Job title ' className='rounded border border-gray-400 px-5 py-2 mt-4 mb-5 md:w-1/4 1/2 shadow' />
                     <button className='bg-green-900 shadow text-white px-3 py-2  border hover:text-green-900 hover:bg-white hover:border'>Search</button>
 
                 </div>
@@ -31,34 +45,35 @@ function Careers() {
 
             <div className='md:px-20 py-5 '>
 
-                <div className='shadow border border-gray-500'>
-                    <div className="md:grid grid-cols-[8fr_1fr] p-5">
-                        <div>
-                            <h1 className='mb-3'>Job Title</h1>
-                            <hr />
-                            <p className='mt-3'><FontAwesomeIcon icon={faLocationDot} className='text-blue-600 me-3' />Kochi</p>
-                            <p className='mt-3'>Job Type:</p>
-                            <p className='mt-3'>Salary:</p>
-                            <p className='mt-3'>Qulification:</p>
-                            <p className='mt-3'>Experience:</p>
-                            <p className='text-justify'>Description:Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorum distinctio, quibusdam perspiciatis doloribus hic, incidunt delectus eius sit voluptates, adipisci harum rerum ratione? In voluptatum neque sapiente totam tenetur molestiae!
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur tempore cumque dolores ipsa blanditiis facere. Omnis, quasi repellat! Atque ullam perferendis, commodi cumque assumenda animi error porro beatae eveniet dolor
-                            </p>
-                        </div>
+                {
+                    alljobs?.length >> 0 ?
+                        alljobs?.map((item, index) => (
+                            <div className='shadow border border-gray-500 mb-5' key={index}>
+                                <div className="md:grid grid-cols-[8fr_1fr] p-5">
+                                    <div>
+                                        <h1 className='mb-3'>{item.title}</h1>
+                                        <hr />
+                                        <p className='mt-3'><FontAwesomeIcon icon={faLocationDot} className='text-blue-600 me-3' />{item.location}</p>
+                                        <p className='mt-3'>Job Type:{item.jType}</p>
+                                        <p className='mt-3'>Salary:{item.salary}</p>
+                                        <p className='mt-3'>Qulification:{item.qualification}</p>
+                                        <p className='mt-3'>Experience:{item.experience}</p>
+                                        <p className='text-justify'>{item.description}</p>
+                                    </div>
 
-                        <div className='flex md:justify-center items-start justify-end'>
-                            <button onClick={()=>setModalStatus(true)} className='bg-blue-800 p-3 mt-5 md:mt-0 text-white ms-3 border hover:text-blue-800 hover:bg-white hover:border'>Apply
-                                <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
-                            </button>
-                        </div>
-                    </div>
+                                    <div className='flex md:justify-center items-start justify-end'>
+                                        <button onClick={() => setModalStatus(true)} className='bg-blue-800 p-3 mt-5 md:mt-0 text-white ms-3 border hover:text-blue-800 hover:bg-white hover:border'>Apply
+                                            <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
+                                        </button>
+                                    </div>
+                                </div>
 
-                </div>
+                            </div>)) : <p className='text-center'>No job openings</p>}
             </div>
 
 
 
-            {modalStatus&&<div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+            {modalStatus && <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
 
                 <div className="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true"></div>
 
@@ -69,7 +84,7 @@ function Careers() {
                             {/* title  */}
                             <div className=" bg-gray-900 p-4 flex  sm:px-6 justify-between">
                                 <h1 className='text-white text-2xl'>Application form</h1>
-                                <FontAwesomeIcon icon={faXmark} onClick={()=>setModalStatus(false)} className='text-white fa-2x' />
+                                <FontAwesomeIcon icon={faXmark} onClick={() => setModalStatus(false)} className='text-white fa-2x' />
                             </div>
 
                             {/* body  */}

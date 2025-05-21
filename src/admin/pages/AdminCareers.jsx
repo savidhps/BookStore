@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Footer from '../../components/Footer'
 import AdminHeader from '../components/AdminHeader'
 import AdminSidebar from '../components/AdminSidebar'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationDot, faTrash, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { toast, ToastContainer } from 'react-toastify'
-import { addJobApi } from '../../services/allApi'
+import { addJobApi, deleteJobApi, getAllJobsApi } from '../../services/allApi'
 
 
 
@@ -16,7 +16,11 @@ function AdminCareers() {
     const [jobDetails, setJobDetails] = useState({
         title: "", location: "", jType: "", salary: "", qualification: "", experience: "", description: ""
     })
-    console.log(jobDetails);
+    const [allJobs, setAllJobs] = useState([])
+    const [addjobStatus,setaddJobStatus]=useState([])
+    const [searchKey,setSearchKey]=useState("")
+    const [deleteStatus,setDeleteStatus]=useState([])
+    // console.log(jobDetails);
 
     const handleReset = () => {
         setJobDetails({
@@ -33,6 +37,9 @@ function AdminCareers() {
             // console.log(result);
             if (result.status == 200) {
                 toast.success("Submited Sucessfully")
+                handleReset()
+                setaddJobStatus(result.data)
+                setModalStatus(false)
             } else if (result.status == 404) {
                 toast.warning(result.response.data)
                 handleReset()
@@ -43,6 +50,29 @@ function AdminCareers() {
 
         }
     }
+
+    const getAllJobs = async (searchKey) => {
+        const result = await getAllJobsApi(searchKey)
+        // console.log(result);
+        if (result.status == 200) {
+            setAllJobs(result.data)
+        }
+
+    }
+    // console.log(allJobs);
+
+    const deleteJob=async(id)=>{
+        const result=await deleteJobApi(id)
+        // console.log(result);
+        toast.success(result.data)
+        setDeleteStatus(result.data)
+        
+    }
+
+
+    useEffect(() => {
+        getAllJobs(searchKey)
+    }, [addjobStatus,searchKey,deleteStatus])
 
     return (
         <>
@@ -65,41 +95,44 @@ function AdminCareers() {
 
                     <div className='md:flex justify-between'>
                         <div>
-                            <input type="text" className='placeholder-gray-300 border px-8 border-gray-400 py-2
+                            <input type="text" value={searchKey} onChange={(e)=>setSearchKey(e.target.value)} className='placeholder-gray-300 border px-8 border-gray-400 py-2
                             ms-5' placeholder='Job Title' />
                             <button className='bg-green-500 px-3 py-2 border border-white'>Search</button>
                         </div>
                         {jobPostStatus && <div>
-                            <button onClick={() => setModalStatus(true)} className='bg-white text-blue-700 border border-blue-700 md:me-5 px-3 py-2'> Add Job</button>
+                            <button onClick={() => setModalStatus(true)} className='bg-white text-blue-700 border border-blue-700
+                            hover:bg-blue-700 hover:text-white md:me-5 px-3 py-2'> Add Job</button>
                         </div>}
                     </div>
 
-                    {jobPostStatus && <div className='md:px-20 py-5 mt-5'>
+                    {jobPostStatus &&
+                        <div className='md:px-20 py-5 mt-5'>
 
-                        <div className='shadow border border-gray-500'>
-                            <div className="md:grid grid-cols-[8fr_1fr] p-5">
-                                <div>
-                                    <h1 className='mb-3'>Job Title</h1>
-                                    <hr />
-                                    <p className='mt-3'><FontAwesomeIcon icon={faLocationDot} className='text-blue-600 me-3' />Kochi</p>
-                                    <p className='mt-3'>Job Type:</p>
-                                    <p className='mt-3'>Salary:</p>
-                                    <p className='mt-3'>Qulification:</p>
-                                    <p className='mt-3'>Experience:</p>
-                                    <p className='text-justify'>Description:Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorum distinctio, quibusdam perspiciatis doloribus hic, incidunt delectus eius sit voluptates, adipisci harum rerum ratione? In voluptatum neque sapiente totam tenetur molestiae!
-                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur tempore cumque dolores ipsa blanditiis facere. Omnis, quasi repellat! Atque ullam perferendis, commodi cumque assumenda animi error porro beatae eveniet dolor
-                                    </p>
+                            {allJobs?.length>0 ?
+                                allJobs.map((item,index)=>(
+                                <div className='shadow border border-gray-500 mb-4' key={index}>
+                                <div className="md:grid grid-cols-[8fr_1fr] p-5">
+                                    <div>
+                                        <h1 className='mb-3'>{item.title}</h1>
+                                        <hr />
+                                        <p className='mt-3'><FontAwesomeIcon icon={faLocationDot} className='text-blue-600 me-3' />{item.location}</p>
+                                        <p className='mt-3'>Job Type:{item.jType}</p>
+                                        <p className='mt-3'>Salary:{item.salary}</p>
+                                        <p className='mt-3'>Qulification:{item.qualification}</p>
+                                        <p className='mt-3'>Experience:{item.experience}</p>
+                                        <p className='text-justify'>{item.description}</p>
+                                    </div>
+
+                                    <div className='flex md:justify-center items-start justify-end '>
+                                        <button onClick={() => deleteJob(item?._id)} className='bg-red-800 p-2 py-2 rounded mt-5 md:mt-0 text-white ms-3 border hover:text-red-800 hover:bg-white hover:border'>Delete
+                                            <FontAwesomeIcon className='' icon={faTrash} />
+                                        </button>
+                                    </div>
                                 </div>
-
-                                <div className='flex md:justify-center items-start justify-end '>
-                                    <button onClick={() => setModalStatus(true)} className='bg-red-800 p-2 py-2 rounded mt-5 md:mt-0 text-white ms-3 border hover:text-red-800 hover:bg-white hover:border'>Delete
-                                        <FontAwesomeIcon className='' icon={faTrash} />
-                                    </button>
-                                </div>
-                            </div>
-
+                            </div>)):
+                            <p>Loading..</p>}
                         </div>
-                    </div>}
+                        }
 
                     {modalStatus && <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
 

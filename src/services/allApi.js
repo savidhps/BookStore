@@ -22,7 +22,12 @@ export const homeBookApi=async()=>{
     return await commonApi('GET',`${serverUrl}/all-home-book`)
 }
 
-//----------user api---------
+//get all jobs
+export const getAllJobsApi=async(searchKey)=>{
+    return await commonApi('GET',`${serverUrl}/all-jobs?search=${searchKey}`)
+}
+
+//----------user api---------------
 //upload a book 
 export const uploadBookApi=async(reqBody,reqHeader)=>{
     return await commonApi('POST',`${serverUrl}/add-book`,reqBody,reqHeader)
@@ -38,7 +43,7 @@ export const getAllBookApi=async(searchKey,reqHeader)=>{
 export const viewABookApi=async(id)=>{
     return await commonApi('GET',`${serverUrl}/view-books/${id}`)
 }
-
+// --------------------admin--------------------------------------
 //api to get all book -admin
 export const getAllBookAdminApi=async(reqHeader)=>{
     return await commonApi('GET',`${serverUrl}/admin-all-books`,'',reqHeader)
@@ -56,4 +61,8 @@ export const getAllUsersApi=async(reqHeader)=>{
 //api to add all jobs
 export const addJobApi=async(reqBody)=>{
     return await commonApi("POST",`${serverUrl}/add-job`,reqBody)
+}
+//api to delete a job
+export const deleteJobApi=async(id)=>{
+    return await commonApi("DELETE",`${serverUrl}/delete-job/${id}`)
 }
