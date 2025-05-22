@@ -43,6 +43,10 @@ export const getAllBookApi=async(searchKey,reqHeader)=>{
 export const viewABookApi=async(id)=>{
     return await commonApi('GET',`${serverUrl}/view-books/${id}`)
 }
+//api to add application
+export const addApplicationApi=async(reqBody,reqHeader)=>{
+    return await commonApi('POST',`${serverUrl}/apply-job`,reqBody,reqHeader)
+}
 // --------------------admin--------------------------------------
 //api to get all book -admin
 export const getAllBookAdminApi=async(reqHeader)=>{
@@ -65,4 +69,8 @@ export const addJobApi=async(reqBody)=>{
 //api to delete a job
 export const deleteJobApi=async(id)=>{
     return await commonApi("DELETE",`${serverUrl}/delete-job/${id}`)
+}
+//api to view application
+export const getApplicationsApi=async()=>{
+    return await commonApi("GET",`${serverUrl}/all-application`)
 }

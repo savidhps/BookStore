@@ -5,8 +5,9 @@ import AdminSidebar from '../components/AdminSidebar'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationDot, faTrash, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { toast, ToastContainer } from 'react-toastify'
-import { addJobApi, deleteJobApi, getAllJobsApi } from '../../services/allApi'
-
+import { addJobApi, deleteJobApi, getAllJobsApi, getApplicationsApi } from '../../services/allApi'
+import { Link } from 'react-router-dom'
+import { serverUrl } from '../../services/serverUrl'
 
 
 function AdminCareers() {
@@ -20,7 +21,10 @@ function AdminCareers() {
     const [addjobStatus,setaddJobStatus]=useState([])
     const [searchKey,setSearchKey]=useState("")
     const [deleteStatus,setDeleteStatus]=useState([])
+    const [allApplication, setAllApplication] = useState([])
     // console.log(jobDetails);
+    console.log(allApplication);
+    
 
     const handleReset = () => {
         setJobDetails({
@@ -68,11 +72,29 @@ function AdminCareers() {
         setDeleteStatus(result.data)
         
     }
+      const getAllApplication=async()=>{
+            const result=await getApplicationsApi()
+            // console.log(result);
+            if(result.status==200){
+                setAllApplication(result.data)
+            }else{
+                alert("something went wrong")
+            }
+            
+        }
 
 
     useEffect(() => {
         getAllJobs(searchKey)
-    }, [addjobStatus,searchKey,deleteStatus])
+        
+        if(jobPostStatus==true){
+            getAllJobs(searchKey)
+        }else if(viewApplicantStatus==true){
+            getAllApplication()
+        }else{
+            alert("something went wrong")
+        }
+    }, [addjobStatus,searchKey,deleteStatus,viewApplicantStatus])
 
     return (
         <>
@@ -191,8 +213,9 @@ function AdminCareers() {
 
 
                     {viewApplicantStatus && (
-                        <div className='md:flex justify-center items-center mt-5'>
-                            <table className='border-2 border-gray-200 shadow-md rounded-md overflow-hidden w-full md:w-auto'>
+                        <div className='md:flex justify-center items-center overflow-x-auto mt-5'>
+                            {allApplication?.length>0?
+                            <table className='border-2 border-gray-200 shadow-md rounded-md  w-full md:w-auto'>
                                 <thead className='bg-blue-500 text-white'>
                                     <tr>
                                         <th className='border-b border-gray-300 text-left py-3 px-4 uppercase font-semibold text-sm'>SL:NO</th>
@@ -206,19 +229,23 @@ function AdminCareers() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr className='bg-white hover:bg-gray-50'>
-                                        <td className='py-3 px-4 border-b border-gray-200'>w</td>
-                                        <td className='py-3 px-4 border-b border-gray-200'>w</td>
-                                        <td className='py-3 px-4 border-b border-gray-200'>w</td>
-                                        <td className='py-3 px-4 border-b border-gray-200'>w</td>
-                                        <td className='py-3 px-4 border-b border-gray-200'>w</td>
-                                        <td className='py-3 px-4 border-b border-gray-200'>w</td>
-                                        <td className='py-3 px-4 border-b border-gray-200'>w</td>
-                                        <td className='py-3 px-4 border-b border-gray-200'>w</td>
-                                    </tr>
+                                    {allApplication?.map((item,index)=>(
+                                    <tr className='bg-white hover:bg-gray-50' key={index}>
+                                        <td className='py-3 px-4 border-b border-gray-200'>{index+1}</td>
+                                        <td className='py-3 px-4 border-b border-gray-200'>{item?.jobtitle}</td>
+                                        <td className='py-3 px-4 border-b border-gray-200'>{item?.fullname}</td>
+                                        <td className='py-3 px-4 border-b border-gray-200'>{item?.qualification}</td>
+                                        <td className='py-3 px-4 border-b border-gray-200'>{item?.email}</td>
+                                        <td className='py-3 px-4 border-b border-gray-200'>{item?.phone}</td>
+                                        <td className='py-3 px-4 border-b border-gray-200'>{item?.coverletter}</td>
+                                        <td className='py-3 px-4 border-b border-gray-200'><Link to={`${serverUrl}/pdfUploads/${item?.resume}`} target='_blank'
+                                        className='text-blue-700 underline'>Resume
+                                        </Link></td>
+                                    </tr>))}
                                     {/* Add more rows here */}
                                 </tbody>
-                            </table>
+                            </table>:
+                            <p>No application Available</p>}
                         </div>
                     )}
 
