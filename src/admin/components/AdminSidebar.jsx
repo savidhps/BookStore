@@ -1,8 +1,10 @@
 import { faBagShopping, faBook, faGear, faHouse } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-faHouse
+import { serverUrl } from '../../services/serverUrl'
+import { adminProfileUploadStatusContext } from '../../context/Contextshare'
+
 function AdminSidebar() {
 
     const navigate = useNavigate()
@@ -11,6 +13,11 @@ function AdminSidebar() {
     const [bookStatus,setBookStatus]=useState(false)
     const [careersStatus,setCareersStatus]=useState(false)
     const [settingStatus,setsettingStatus]=useState(false)
+    const [adminD, setadminD]  = useState({
+        username:"",
+        profile:""
+    })
+    const {adminProfileUploadStatus} = useContext(adminProfileUploadStatusContext)
 
     const filter = (data) => {
         if (data == 'home') {
@@ -41,15 +48,17 @@ function AdminSidebar() {
             console.log('no such page');
             
         }
+        const user=JSON.parse(sessionStorage.getItem("existingUser"))
+        setadminD({username:user.username,profile:user.profile})
         
-    },[])
+    },[adminProfileUploadStatus])
 
     return (
         <>
-            <img className='z-52 mt-5' id='profileFile' src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+            <img className='z-52 mt-5' id='profileFile' src={adminD.profile==""?"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png":`${serverUrl}/upload/${adminD.profile}`}
                 alt="noimage" style={{ width: '150px', height: '150px', borderRadius: '50%' }} />
 
-            <h1 className='my-5'>Username</h1>
+            <h1 className='my-5'>{adminD.username}</h1>
 
 
             <div className='my-5'>
