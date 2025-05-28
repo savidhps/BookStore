@@ -4,28 +4,60 @@ import Footer from '../../components/Footer'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBackward, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { Link, useParams } from 'react-router-dom'
-import { viewABookApi } from '../../services/allApi'
+import { makePaymentApi, viewABookApi } from '../../services/allApi'
 import { serverUrl } from '../../services/serverUrl'
+import { loadStripe } from '@stripe/stripe-js';
+import { toast, ToastContainer } from 'react-toastify'
+
 
 function ViewBook() {
   const [modalStatus, setModalStatus] = useState(false);
-  const {id}=useParams()
-  const [viewBookDetails,setViewBookDetails]=useState('')
+  const { id } = useParams()
+  const [viewBookDetails, setViewBookDetails] = useState('')
+  const [token, setToken] = useState("")
+
 
   // console.log(id);
-  
-  
-  const viewABook=async(id)=>{
-    const result=await viewABookApi(id)
-    console.log(result);
+
+
+  const viewABook = async (id) => {
+    const result = await viewABookApi(id)
+    // console.log(result);
     setViewBookDetails(result.data)
-    
+
   }
 
-  useEffect(()=>{
-    viewABook(id)
+  const makePayment = async () => {
+    // console.log(viewBookDetails);
 
-  },[])
+    const stripe = await loadStripe('pk_test_51RSy07GbLKwtiywW9zdWyVygozSGVgRv6Mer8BlMxdnbOn70cNDnezime9AU0ZDORnTAId0IT3lMmlpr0LTkaIeI009hN8AJXh');
+    //data to update in backend
+    const reqBody = {
+      bookDetails: viewBookDetails
+    }
+    const reqHeader = {
+      "Authorization": `Bearer ${token}`
+    }
+    const result = await makePaymentApi(reqBody, reqHeader)
+    console.log(result);
+    // console.log(result.data.existingBook);
+    
+    const sessionId=result.data.sessionId
+    const response=stripe.redirectToCheckout({
+      sessionId:sessionId
+    })
+    if(response.error){
+      toast.error("something went wrong")
+    }
+  }
+
+  useEffect(() => {
+    viewABook(id)
+    if (sessionStorage.getItem("token")) {
+      setToken(sessionStorage.getItem("token"))
+    }
+
+  }, [])
 
   return (
     <>
@@ -61,8 +93,8 @@ function ViewBook() {
               <Link to={'/allbooks'}>
                 <button type='button' className='px-4 py-2 bg-blue-600 text-white border border-blue-600 hover:bg-white hover:text-blue-600 me-5'><FontAwesomeIcon icon={faBackward} /> Back</button>
 
-              </Link>                          
-              <button type='button' className='px-4 py-2 bg-green-600 text-white border border-green-600 hover:bg-white hover:text-green-600'>Submit</button>
+              </Link>
+              <button onClick={makePayment} type='button' className='px-4 py-2 bg-green-600 text-white border border-green-600 hover:bg-white hover:text-green-600'>Buy ${viewBookDetails?.dprice}</button>
             </div>
           </div>
         </div>
@@ -86,8 +118,8 @@ function ViewBook() {
               <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div className="flex justify-center items-center">
                   {
-                    viewBookDetails?.uploadingImg.map((item)=>(
-                  <img src={`${serverUrl}/upload/${item}`} style={{ height: '300px', width: '200px' }} />
+                    viewBookDetails?.uploadingImg.map((item) => (
+                      <img src={`${serverUrl}/upload/${item}`} style={{ height: '300px', width: '200px' }} />
                     ))
                   }
                 </div>
@@ -97,6 +129,8 @@ function ViewBook() {
           </div>
         </div>
       </div>}
+            <ToastContainer theme='colored' position='top-center' autoClose={2000} />
+      
 
       <Footer />
 

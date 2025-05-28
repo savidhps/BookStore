@@ -14,6 +14,8 @@ import AdminBooks from './admin/pages/AdminBooks';
 import AdminCareers from './admin/pages/AdminCareers';
 import AdminSettings from './admin/pages/AdminSettings';
 import ViewBook from "./users/pages/ViewBook";
+import Paymentsucess from './users/pages/Paymentsucess';
+import Paymenterror from './users/pages/Paymenterror';
 
 function App() {
   const [isLoading, setIsLoading] = useState(false)
@@ -39,6 +41,8 @@ function App() {
         <Route path='/admin-careers' element={<AdminCareers/>} />
         <Route path='/admin-setings' element={<AdminSettings/>} />
         <Route path='/view-books/:id' element={<ViewBook/>} />
+        <Route path='/payment-sucess' element={<Paymentsucess/>} />
+        <Route path='/payment-error' element={<Paymenterror/>} />
         
         <Route path='*' element={<PagenotFound />} />
       </Routes>

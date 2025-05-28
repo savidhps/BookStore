@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faInstagram, faSquareTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faUser, faBars, faAngleDown, faPowerOff } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 function Header() {
@@ -12,12 +12,22 @@ function Header() {
   const [dropDownStatue, setDropDownStatus] = useState(false)
   const [tocken, setTocken] = useState('')
 
+
+  const navigate=useNavigate()
+  const logout=()=>{
+    sessionStorage.removeItem("existingUser")
+    sessionStorage.removeItem("token")
+    setDropDownStatus(false)
+    setStatus(false)
+    navigate('/')
+  }
+
   useEffect(() => {
     if (sessionStorage.getItem("token")) {
       const token = sessionStorage.getItem("token")
       setTocken(token)
     }
-  }, [])
+  }, [tocken])
 
   return (
     <>
@@ -39,7 +49,7 @@ function Header() {
           <FontAwesomeIcon icon={faSquareTwitter} className='me-2' />
 
           {!tocken ? <Link to={'/login'}>
-            <button className='border border-black rounded  px-3 py-2'><FontAwesomeIcon icon={faUser}
+            <button  className='border border-black rounded  px-3 py-2'><FontAwesomeIcon icon={faUser}
               className='me-2' /> Login</button>
           </Link>
             :
@@ -64,7 +74,7 @@ function Header() {
                       Profile
                     </p>
                   </Link>
-                  <button className='px-4 py-2 text-sm block ' role="menuitem" tabIndex="-1" id='menu-item-1'>
+                  <button  onClick={logout} className='px-4 py-2 text-sm block ' role="menuitem" tabIndex="-1" id='menu-item-1'>
                     <FontAwesomeIcon className='me-2' icon={faPowerOff} />
                     Logout
                   </button>

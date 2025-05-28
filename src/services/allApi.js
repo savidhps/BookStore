@@ -47,6 +47,26 @@ export const viewABookApi=async(id)=>{
 export const addApplicationApi=async(reqBody,reqHeader)=>{
     return await commonApi('POST',`${serverUrl}/apply-job`,reqBody,reqHeader)
 }
+
+//api to get all user books
+export const getAllUsersBookApi=async(reqHeader)=>{
+    return await commonApi('GET',`${serverUrl}/user-books`,"",reqHeader)
+}
+
+//api to get all user brought  books
+export const getAllUsersBroughtBookApi=async(reqHeader)=>{
+    return await commonApi('GET',`${serverUrl}/user-brought-books`,"",reqHeader)
+}
+
+//api to delete a user books
+export const deleteAUserBookApi=async(id)=>{
+    return await commonApi('DELETE',`${serverUrl}/delete-user-books/${id}`)
+}
+//api to make payment
+export const makePaymentApi=async(reqBody,reqHeader)=>{
+    return await commonApi('PUT',`${serverUrl}/make-payment`,reqBody,reqHeader)
+}
+
 // --------------------admin--------------------------------------
 //api to get all book -admin
 export const getAllBookAdminApi=async(reqHeader)=>{
@@ -78,3 +98,4 @@ export const getApplicationsApi=async()=>{
 export const updateProfileApi=async(reqBody,reqHeader)=>{
     return await commonApi("PUT",`${serverUrl}/admin-profile-update`,reqBody,reqHeader)
 }
+
